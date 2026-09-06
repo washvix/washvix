@@ -1,2 +1,6 @@
 node_modules/
 .env
+bookings.json
+booked-slots.json
+reviews.json
+washvix.db
