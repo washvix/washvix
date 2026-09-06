@@ -293,3 +293,5 @@ Your Washvix booking system is ready to use.
 **Start here**: Open `index.html` in your browser
 
 Enjoy! 🚗✨
+#   w a s h v i x  
+ 
