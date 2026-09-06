@@ -191,12 +191,14 @@ app.post('/api/auth/login', (req, res) => {
     return res.status(401).json({ success: false, error: 'Invalid admin credentials' });
   }
 
-  res.setHeader('Set-Cookie', `${AUTH_COOKIE}=${encodeURIComponent(createAdminSession())}; HttpOnly; SameSite=Strict; Path=/; Max-Age=28800${process.env.NODE_ENV === 'production' ? '; Secure' : ''}`);
+  const cookiePolicy = process.env.NODE_ENV === 'production' ? 'SameSite=None; Secure' : 'SameSite=Strict';
+  res.setHeader('Set-Cookie', `${AUTH_COOKIE}=${encodeURIComponent(createAdminSession())}; HttpOnly; ${cookiePolicy}; Path=/; Max-Age=28800`);
   res.json({ success: true, message: 'Admin login successful' });
 });
 
 app.post('/api/auth/logout', (req, res) => {
-  res.setHeader('Set-Cookie', `${AUTH_COOKIE}=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0${process.env.NODE_ENV === 'production' ? '; Secure' : ''}`);
+  const cookiePolicy = process.env.NODE_ENV === 'production' ? 'SameSite=None; Secure' : 'SameSite=Strict';
+  res.setHeader('Set-Cookie', `${AUTH_COOKIE}=; HttpOnly; ${cookiePolicy}; Path=/; Max-Age=0`);
   res.json({ success: true, message: 'Admin logged out' });
 });
 
@@ -259,7 +261,7 @@ app.get('/api/bookings/filter', requireAdmin, async (req, res) => {
     }
 
     if (phone) {
-      bookings = bookings.filter(b => 
+      bookings = bookings.filter(b =>
         b.phone.toLowerCase().includes(phone.toLowerCase())
       );
     }
@@ -308,7 +310,7 @@ app.post('/api/bookings', async (req, res) => {
     try {
       await db.addBookedSlot(booking.bookingDate, booking.bookingTime, savedBooking.id);
     } catch (slotError) {
-      await db.deleteBooking(savedBooking.id).catch(() => {});
+      await db.deleteBooking(savedBooking.id).catch(() => { });
       if (slotError.message && slotError.message.includes('UNIQUE')) {
         return res.status(409).json({
           success: false,
@@ -357,7 +359,7 @@ app.get('/api/booked-slots/:date', async (req, res) => {
   try {
     const { date } = req.params;
     const slots = await db.getBookedSlotsForDate(date);
-    
+
     res.json({
       success: true,
       date: date,
@@ -381,12 +383,12 @@ app.get('/api/available-slots/:date', async (req, res) => {
       '08:00', '09:00', '10:00', '11:00', '12:00',
       '14:00', '15:00', '16:00', '17:00', '18:00'
     ];
-    
+
     const bookedSlots = await db.getBookedSlotsForDate(date);
     const bookedTimes = bookedSlots.map(s => s.time);
-    
+
     const availableSlots = timeSlots.filter(time => !bookedTimes.includes(time));
-    
+
     res.json({
       success: true,
       date: date,
@@ -461,7 +463,7 @@ app.get('/api/statistics', requireAdmin, async (req, res) => {
     const bookings = await db.getBookings();
     const today = new Date().toISOString().split('T')[0];
     const upcomingBookings = bookings.filter(b => b.bookingDate >= today).length;
-    
+
     const totalRevenue = bookings.reduce((sum, b) => {
       const price = parseInt(b.price?.replace('₹', '').replace(/,/g, '') || 0);
       return sum + price;
@@ -592,7 +594,7 @@ app.get('/api/reviews', async (req, res) => {
 app.post('/api/reviews', async (req, res) => {
   try {
     const { name, rating, comment, service, vehicle, location } = req.body;
-    
+
     if (!name || !comment) {
       return res.status(400).json({
         success: false,
@@ -671,7 +673,7 @@ app.get('/api/health', (req, res) => {
 app.get('/api/search', requireAdmin, async (req, res) => {
   try {
     const { q } = req.query;
-    
+
     if (!q || q.trim().length === 0) {
       return res.status(400).json({
         success: false,
@@ -681,7 +683,7 @@ app.get('/api/search', requireAdmin, async (req, res) => {
 
     const query = q.toLowerCase();
     const bookings = await db.getBookings();
-    
+
     const results = bookings.filter(b =>
       b.name.toLowerCase().includes(query) ||
       b.phone.toLowerCase().includes(query) ||
@@ -725,7 +727,7 @@ app.get('/api/export/json', requireAdmin, async (req, res) => {
 app.get('/api/export/csv', requireAdmin, async (req, res) => {
   try {
     const bookings = await db.getBookings();
-    
+
     if (bookings.length === 0) {
       return res.json({
         success: false,
@@ -734,7 +736,7 @@ app.get('/api/export/csv', requireAdmin, async (req, res) => {
     }
 
     const headers = [
-      'ID', 'Name', 'Phone', 'Email', 'Date', 'Time', 
+      'ID', 'Name', 'Phone', 'Email', 'Date', 'Time',
       'Vehicle Make', 'Vehicle Size', 'Services', 'Status', 'Price'
     ];
 
@@ -753,7 +755,7 @@ app.get('/api/export/csv', requireAdmin, async (req, res) => {
     ].join(','));
 
     const csv = headers.join(',') + '\n' + csvData.join('\n');
-    
+
     res.setHeader('Content-Type', 'text/csv');
     res.setHeader('Content-Disposition', 'attachment; filename="bookings.csv"');
     res.send(csv);
@@ -771,8 +773,8 @@ app.get('/api/reports/daily', requireAdmin, async (req, res) => {
   try {
     const { date } = req.query;
     const bookings = await db.getBookings();
-    
-    const filteredBookings = date 
+
+    const filteredBookings = date
       ? bookings.filter(b => b.bookingDate === date)
       : bookings;
 

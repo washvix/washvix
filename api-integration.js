@@ -6,7 +6,9 @@
 // ============================================
 const API_BASE_URL = window.location.protocol === 'file:'
   ? 'http://localhost:5000/api'
-  : `${window.location.origin}/api`;
+  : window.location.hostname.endsWith('washvix.com')
+    ? 'https://washvix.onrender.com/api'
+    : `${window.location.origin}/api`;
 
 function apiFetch(url, options = {}) {
   return fetch(url, { ...options, credentials: 'include' });
@@ -21,7 +23,7 @@ async function getBookedSlotsFromAPI(date) {
   try {
     const response = await apiFetch(`${API_BASE_URL}/booked-slots/${date}`);
     const result = await response.json();
-    
+
     if (result.success) {
       return result.data; // Array of booked slots
     } else {
@@ -49,18 +51,18 @@ async function isSlotBookedAPI(date, time) {
 async function updateTimeSlotsFromAPI() {
   const dateInput = document.getElementById('bookingDate').value;
   const timeSelect = document.getElementById('bookingTime');
-  
+
   if (!dateInput) return;
-  
+
   // Get booked slots from API
   const bookedSlots = await getBookedSlotsFromAPI(dateInput);
   const bookedTimes = bookedSlots.map(slot => slot.time);
-  
+
   // Update dropdown options
   const options = timeSelect.querySelectorAll('option');
   options.forEach((option, index) => {
     if (index === 0) return; // Keep placeholder
-    
+
     const time = option.value;
     if (bookedTimes.includes(time)) {
       option.disabled = true;
@@ -72,7 +74,7 @@ async function updateTimeSlotsFromAPI() {
       option.textContent = option.textContent.replace(' (Booked)', '');
     }
   });
-  
+
   timeSelect.value = '';
 }
 
@@ -86,9 +88,9 @@ async function submitBookingToAPI(formData) {
       },
       body: JSON.stringify(formData)
     });
-    
+
     const result = await response.json();
-    
+
     if (result.success) {
       return {
         success: true,
@@ -119,7 +121,7 @@ async function fetchAllBookingsFromAPI() {
   try {
     const response = await apiFetch(`${API_BASE_URL}/bookings`);
     const result = await response.json();
-    
+
     if (result.success) {
       return result.data;
     } else {
@@ -137,17 +139,17 @@ async function filterBookingsFromAPI(date = '', phone = '') {
   try {
     let url = `${API_BASE_URL}/bookings/filter`;
     const params = new URLSearchParams();
-    
+
     if (date) params.append('date', date);
     if (phone) params.append('phone', phone);
-    
+
     if (params.toString()) {
       url += '?' + params.toString();
     }
-    
+
     const response = await apiFetch(url);
     const result = await response.json();
-    
+
     if (result.success) {
       return result.data;
     } else {
@@ -165,7 +167,7 @@ async function getStatisticsFromAPI() {
   try {
     const response = await apiFetch(`${API_BASE_URL}/statistics`);
     const result = await response.json();
-    
+
     if (result.success) {
       return result.data;
     } else {
@@ -184,9 +186,9 @@ async function deleteBookingFromAPI(bookingId) {
     const response = await apiFetch(`${API_BASE_URL}/bookings/${bookingId}`, {
       method: 'DELETE'
     });
-    
+
     const result = await response.json();
-    
+
     if (result.success) {
       return {
         success: true,
@@ -213,9 +215,9 @@ async function deleteAllBookingsFromAPI() {
     const response = await apiFetch(`${API_BASE_URL}/bookings`, {
       method: 'DELETE'
     });
-    
+
     const result = await response.json();
-    
+
     if (result.success) {
       return {
         success: true,
@@ -246,9 +248,9 @@ async function updateBookingStatusFromAPI(bookingId, status) {
       },
       body: JSON.stringify({ status })
     });
-    
+
     const result = await response.json();
-    
+
     if (result.success) {
       return {
         success: true,
@@ -468,7 +470,7 @@ window.API = {
   isSlotBooked: isSlotBookedAPI,
   updateTimeSlots: updateTimeSlotsFromAPI,
   submitBooking: submitBookingToAPI,
-  
+
   // Review functions
   getReviews: getReviewsFromAPI,
   submitReview: submitReviewToAPI,
