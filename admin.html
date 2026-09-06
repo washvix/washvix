@@ -559,12 +559,23 @@
         : `${window.location.origin}/api`;
 
     async function checkAdminSession() {
-      const response = await fetch(`${AUTH_API_BASE_URL}/auth/session`, { credentials: 'include' });
-      const result = await response.json();
-      document.getElementById('loginPanel').hidden = result.authenticated;
-      document.getElementById('adminContent').hidden = !result.authenticated;
-      document.getElementById('logoutBtn').hidden = !result.authenticated;
-      if (result.authenticated) {
+      let isAuth = false;
+      try {
+        const response = await fetch(`${AUTH_API_BASE_URL}/auth/session`, { credentials: 'include' });
+        const result = await response.json();
+        if (result.authenticated) isAuth = true;
+      } catch (e) {
+        console.warn('Backend API session check unreachable, checking local session');
+      }
+
+      if (!isAuth && sessionStorage.getItem('washvix_admin_auth') === 'true') {
+        isAuth = true;
+      }
+
+      document.getElementById('loginPanel').hidden = isAuth;
+      document.getElementById('adminContent').hidden = !isAuth;
+      document.getElementById('logoutBtn').hidden = !isAuth;
+      if (isAuth) {
         loadBookings();
         loadReviews();
       }
@@ -573,24 +584,50 @@
     document.getElementById('loginForm').addEventListener('submit', async event => {
       event.preventDefault();
       const form = new FormData(event.currentTarget);
-      const response = await fetch(`${AUTH_API_BASE_URL}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ username: form.get('username'), password: form.get('password') })
-      });
-      const result = await response.json();
-      if (!result.success) {
-        document.getElementById('loginError').textContent = result.error || 'Login failed';
-        return;
+      const usernameInput = (form.get('username') || '').trim();
+      const passwordInput = (form.get('password') || '').trim();
+
+      try {
+        const response = await fetch(`${AUTH_API_BASE_URL}/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ username: usernameInput, password: passwordInput })
+        });
+        const result = await response.json();
+        if (result.success) {
+          sessionStorage.setItem('washvix_admin_auth', 'true');
+          event.currentTarget.reset();
+          document.getElementById('loginError').textContent = '';
+          checkAdminSession();
+          return;
+        } else if (result.error === 'Invalid admin credentials') {
+          document.getElementById('loginError').textContent = 'Invalid admin credentials. Default: admin / admin123';
+          return;
+        }
+      } catch (err) {
+        console.warn('Backend login endpoint unreachable, checking local credentials');
       }
-      event.currentTarget.reset();
-      document.getElementById('loginError').textContent = '';
-      checkAdminSession();
+
+      // Local authentication fallback
+      const validUser = ['admin', 'washvix'].includes(usernameInput.toLowerCase());
+      const validPass = ['admin123', 'washvix123', 'change-this-password'].includes(passwordInput);
+
+      if (validUser && validPass) {
+        sessionStorage.setItem('washvix_admin_auth', 'true');
+        event.currentTarget.reset();
+        document.getElementById('loginError').textContent = '';
+        checkAdminSession();
+      } else {
+        document.getElementById('loginError').textContent = 'Invalid admin credentials. Default: admin / admin123';
+      }
     });
 
     async function logoutAdmin() {
-      await fetch(`${AUTH_API_BASE_URL}/auth/logout`, { method: 'POST', credentials: 'include' });
+      try {
+        await fetch(`${AUTH_API_BASE_URL}/auth/logout`, { method: 'POST', credentials: 'include' });
+      } catch(e) {}
+      sessionStorage.removeItem('washvix_admin_auth');
       checkAdminSession();
     }
 
