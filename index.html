@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Washvix — Elevate Every Ride</title>
+<meta name="description" content="Washvix brings premium car washing and detailing straight to your driveway. Book a mobile wash today.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0b0a0d;
+    --panel:#161319;
+    --panel-2:#1d1a21;
+    --blue:#0066ff;
+    --cyan:#0d99ff;
+    --chrome:#f4f2ef;
+    --steel:#948f9b;
+    --line: rgba(244,242,239,0.09);
+    --grad: linear-gradient(120deg, var(--blue), var(--cyan) 55%, var(--blue));
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--chrome);
+    font-family:'Lato',sans-serif;
+    overflow-x:hidden;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
+  }
+
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px;}
+  .eyebrow{
+    font-family:'Lato',sans-serif;
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--cyan);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{content:'';width:22px;height:1px;background:var(--cyan);}
+  .hero-tag::after{content:'';width:22px;height:1px;background:var(--cyan);}
+
+  h1,h2,h3{font-family:'Lato',sans-serif; font-weight:400; letter-spacing:0.01em; line-height:0.95;}
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+
+  /* ---------- NAV ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    background:rgba(11,10,13,0.72);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 28px; max-width:1180px; margin:0 auto;
+  }
+  .brand{display:flex;align-items:center;gap:12px;}
+  .brand-mark{width:38px;height:38px;flex:none;}
+  .brand-name{font-family:'Lato',sans-serif;font-size:24px;letter-spacing:0.08em;color:var(--chrome);}
+  .brand-name .accent{color:var(--cyan);}
+  .nav-links{display:flex;gap:32px;font-size:14px;font-weight:600;}
+  .nav-links a{color:var(--steel);transition:color .2s;}
+  .nav-links a:hover{color:var(--chrome);}
+  .nav-cta{
+    font-family:'Lato',sans-serif;
+    font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+    padding:10px 18px; border-radius:100px;
+    background:var(--grad); background-size:200% 100%;
+    color:#fff; font-weight:600;
+    transition:background-position .4s ease;
+  }
+  .nav-cta:hover{background-position:100% 0;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex; flex-direction:column; justify-content:center;
+    padding:140px 0 100px;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 0%, rgba(13,153,255,0.16), transparent 60%),
+      radial-gradient(ellipse 50% 40% at 10% 100%, rgba(0,102,255,0.10), transparent 60%),
+      var(--ink);
+  }
+  .hero-inner{position:relative; z-index:2;}
+  .hero-tag{margin-bottom:26px;}
+  .headline-block{position:relative; margin-bottom:28px;}
+  .headline-block h1{
+    font-size:clamp(52px, 10vw, 128px);
+    text-transform:uppercase;
+  }
+  .headline-row{position:relative; display:block; overflow:hidden;}
+  .headline-base{
+    display:block; color:#2b2731;
+  }
+  .headline-shine{
+    position:absolute; top:0; left:0; display:block;
+    background:var(--grad); background-size:200% 100%;
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    clip-path: inset(0 100% 0 0);
+    animation: reveal 1.1s cubic-bezier(.65,0,.35,1) forwards, drift 5s ease-in-out 1.6s infinite alternate;
+  }
+  .headline-row:nth-child(1) .headline-shine{animation-delay:.15s, 1.7s;}
+  .headline-row:nth-child(2) .headline-shine{animation-delay:.55s, 2.1s;}
+  .headline-row:nth-child(3) .headline-shine{animation-delay:.95s, 2.5s;}
+  .squeegee{
+    position:absolute; top:-6%; height:112%; width:52px;
+    background:linear-gradient(90deg, transparent, rgba(244,242,239,0.85), transparent);
+    transform:skewX(-14deg);
+    filter:blur(1px);
+    left:-6%;
+    animation:wipe 1.1s cubic-bezier(.65,0,.35,1) forwards;
+    opacity:0.9;
+  }
+  .headline-row:nth-child(1) .squeegee{animation-delay:.15s;}
+  .headline-row:nth-child(2) .squeegee{animation-delay:.55s;}
+  .headline-row:nth-child(3) .squeegee{animation-delay:.95s;}
+
+  @keyframes reveal{ to{ clip-path: inset(0 0 0 0); } }
+  @keyframes wipe{ to{ left:106%; } }
+  @keyframes drift{ from{background-position:0% 0;} to{background-position:100% 0;} }
+
+  .hero-sub{
+    max-width:520px; color:var(--steel); font-size:18px; line-height:1.6;
+    margin-bottom:40px;
+  }
+  .hero-cta-row{display:flex; gap:16px; flex-wrap:wrap; margin-bottom:64px;}
+  .btn{
+    font-family:'Lato',sans-serif; font-size:13px; letter-spacing:.06em; text-transform:uppercase;
+    padding:16px 30px; border-radius:100px; font-weight:600;
+    display:inline-flex; align-items:center; gap:10px;
+    transition:transform .25s ease, box-shadow .25s ease, background-position .4s ease;
+  }
+  .btn-primary{
+    background:var(--grad); background-size:200% 100%; color:#fff;
+    box-shadow:0 10px 30px -8px rgba(13,153,255,0.55);
+  }
+  .btn-primary:hover{transform:translateY(-2px); background-position:100% 0;}
+  .btn-ghost{
+    border:1px solid var(--line); color:var(--chrome);
+  }
+  .btn-ghost:hover{border-color:var(--cyan); color:var(--cyan);}
+
+  .hero-stats{
+    display:flex; gap:48px; flex-wrap:wrap;
+    border-top:1px solid var(--line); padding-top:28px;
+  }
+  .stat-num{font-family:'Lato',sans-serif; font-size:38px; color:var(--chrome);}
+  .stat-label{font-family:'Lato',sans-serif; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--steel); margin-top:4px;}
+
+  /* ---------- SECTION SHARED ---------- */
+  section{padding:120px 0;}
+  .section-head{max-width:640px; margin-bottom:64px;}
+  .section-head h2{font-size:clamp(36px,5vw,56px); text-transform:uppercase; margin:16px 0 18px;}
+  .section-head p{color:var(--steel); font-size:17px; line-height:1.65;}
+  .divider{border:none; border-top:1px solid var(--line);}
+
+  /* ---------- SERVICE MENU ---------- */
+  .service-boxes{max-width:980px; margin:0 auto; display:grid; gap:14px;}
+  .service-box{
+    display:grid; grid-template-columns:minmax(0,1.6fr) .7fr .7fr;
+    border:1px solid var(--line); border-radius:12px; overflow:hidden;
+    background:var(--panel); transition:background .25s ease, border-color .25s ease;
+  }
+  .service-box:hover{background:var(--panel-2); border-color:rgba(13,153,255,.35);}
+  .service-info, .service-price-box{padding:18px 22px;}
+  .service-price-box{display:flex; flex-direction:column; justify-content:center; align-items:center; border-left:1px solid var(--line);}
+  .service-price-label{color:var(--steel); font-size:11px; letter-spacing:.08em; text-transform:uppercase; margin-bottom:6px;}
+  .service-name{font-size:16px; font-weight:700; text-transform:uppercase; margin-bottom:6px;}
+  .service-details{display:flex; flex-wrap:wrap; gap:4px 16px; color:var(--steel); font-size:13px; line-height:1.45;}
+  .service-details span::before{content:'•'; color:var(--cyan); margin-right:6px;}
+  .service-price{font-size:26px; font-weight:700; color:var(--cyan); white-space:nowrap;}
+  @media (max-width:700px){
+    .service-box{grid-template-columns:1fr 1fr;}
+    .service-info{grid-column:1 / -1;}
+    .service-price-box{padding:14px 16px;}
+    .service-price-box:first-of-type{border-left:none; border-top:1px solid var(--line);}
+    .service-price-box:last-of-type{border-top:1px solid var(--line);}
+    .service-price{font-size:22px;}
+  }
+
+  /* ---------- HOW IT WORKS ---------- */
+  .steps{display:grid; grid-template-columns:repeat(3,1fr); gap:40px;}
+  .step{border-top:1px solid var(--line); padding-top:24px;}
+  .step-no{font-family:'Lato',sans-serif; font-size:13px; color:var(--cyan); margin-bottom:20px;}
+  .step h3{font-size:28px; text-transform:uppercase; margin-bottom:12px;}
+  .step p{color:var(--steel); font-size:15px; line-height:1.65;}
+
+  /* ---------- SERVICE AREA ---------- */
+  .area-section{
+    background:var(--panel); border-radius:24px; padding:64px; position:relative; overflow:hidden;
+    display:grid; grid-template-columns:1.1fr 1fr; gap:56px; align-items:center;
+  }
+  .area-copy p{color:var(--steel); font-size:16px; line-height:1.7; margin-bottom:28px;}
+  .area-list{list-style:none; display:flex; flex-direction:column; gap:14px;}
+  .area-list li{font-size:14px; display:flex; gap:12px; align-items:center;}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);flex:none;}
+  .radius-text{
+    color:var(--cyan); font-size:18px; font-weight:700; letter-spacing:.08em;
+    line-height:1.4; text-align:center; text-transform:uppercase;
+  }
+
+  /* ---------- REVIEWS ---------- */
+  .reviews-layout{display:grid; grid-template-columns:1.2fr .8fr; gap:24px; align-items:start;}
+  .reviews-list{display:grid; gap:14px;}
+  #reviewItems{display:grid; gap:14px;}
+  .review-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:24px;
+  }
+  .review-card-top{display:flex; justify-content:space-between; gap:16px; margin-bottom:14px;}
+  .review-name{font-size:16px; font-weight:700;}
+  .review-meta{color:var(--steel); font-size:12px; margin-top:4px;}
+  .review-stars{color:#ffb703; letter-spacing:2px; white-space:nowrap;}
+  .review-comment{color:var(--chrome); font-size:15px; line-height:1.6;}
+  .review-form{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:24px;}
+  .review-form h3{font-size:24px; text-transform:uppercase; margin-bottom:20px;}
+  .review-summary{border-bottom:1px solid var(--line); margin-bottom:20px; padding-bottom:18px;}
+  .review-average{color:var(--chrome); font-size:28px; font-weight:700;}
+  .review-summary-label{color:var(--steel); font-size:12px; margin-left:8px; text-transform:uppercase; letter-spacing:.06em;}
+  .review-form label{display:block; color:var(--steel); font-size:12px; letter-spacing:.06em; margin:0 0 7px; text-transform:uppercase;}
+  .review-form input,.review-form select,.review-form textarea{
+    width:100%; background:var(--ink); border:1px solid var(--line); border-radius:8px;
+    color:var(--chrome); font:inherit; font-size:14px; padding:11px 12px; margin-bottom:15px;
+  }
+  .review-form textarea{min-height:110px; resize:vertical;}
+  .review-form input:focus,.review-form select:focus,.review-form textarea:focus{outline:none; border-color:var(--cyan);}
+  .review-status{color:var(--steel); font-size:13px; line-height:1.4; margin-top:14px;}
+  @media (max-width:900px){
+    .reviews-layout{grid-template-columns:1fr;}
+  }
+
+  /* ---------- TESTIMONIALS ---------- */
+  .quotes{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:18px; overflow:hidden;}
+  .quote{background:var(--panel); padding:34px 30px;}
+  .quote p{font-size:16px; line-height:1.65; color:var(--chrome); margin-bottom:22px;}
+  .quote-name{font-family:'Lato',sans-serif; font-size:12px; color:var(--steel); letter-spacing:.05em;}
+
+  /* ---------- FOOTER ---------- */
+  footer{border-top:1px solid var(--line); padding:60px 0 40px;}
+  .foot-top{display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:40px; margin-bottom:48px;}
+  .foot-brand{display:flex; align-items:center; gap:12px;}
+  .foot-brand .brand-name{font-size:26px;}
+  .foot-tag{color:var(--steel); font-size:14px; margin-top:6px;}
+  .foot-cols{display:flex; gap:64px; flex-wrap:wrap;}
+  .foot-col h4{font-family:'Lato',sans-serif; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--steel); margin-bottom:16px;}
+  .foot-col a, .foot-col span{display:block; font-size:14px; color:var(--chrome); margin-bottom:10px; opacity:.85;}
+  .foot-col a:hover{opacity:1; color:var(--cyan);}
+  .foot-bottom{display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; padding-top:24px; border-top:1px solid var(--line);}
+  .foot-bottom span{font-family:'Lato',sans-serif; font-size:12px; color:var(--steel);}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:900px){
+    .nav-links{display:none;}
+    .quotes{grid-template-columns:1fr;}
+    .steps{grid-template-columns:1fr; gap:32px;}
+    .area-section{grid-template-columns:1fr; padding:40px 24px;}
+    .hero{padding:120px 0 70px;}
+    .foot-cols{gap:36px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="index.html" class="brand">
+      <svg class="brand-mark" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Left V Stroke -->
+        <path d="M18 20 L42 80 L52 56" stroke="var(--chrome)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Right V Stroke -->
+        <path d="M34 18 L58 78 L80 18" stroke="var(--chrome)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Blue Accent Line -->
+        <path d="M52 38 L72 82" stroke="var(--cyan)" stroke-width="4.5" stroke-linecap="round"/>
+      </svg>
+      <span class="brand-name">WASH<span class="accent">VIX</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#services">Packages</a>
+      <a href="#how">How it works</a>
+      <a href="#area">Service area</a>
+      <a href="#reviews">Reviews</a>
+    </div>
+    <a class="nav-cta" href="book.html">Book a Care</a>
+  </nav>
+</header>
+
+<section class="hero" id="home">
+  <div class="wrap hero-inner">
+    <div class="hero-tag eyebrow">OWN YOUR SHINE</div>
+    <div class="headline-block">
+      <h1>
+        <span class="headline-row"><span class="headline-base">ELEVATE</span><span class="headline-shine" aria-hidden="true">ELEVATE</span><span class="squeegee"></span></span>
+        <span class="headline-row"><span class="headline-base">EVERY</span><span class="headline-shine" aria-hidden="true">EVERY</span><span class="squeegee"></span></span>
+        <span class="headline-row"><span class="headline-base">RIDE</span><span class="headline-shine" aria-hidden="true">RIDE</span><span class="squeegee"></span></span>
+      </h1>
+    </div>
+    <p class="hero-sub">Washvix brings a full-service wash and detail crew straight to your driveway. No drive-in, no waiting room — just a sharper ride, wherever you parked it.</p>
+
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">Rourkela</div>
+        <div class="stat-label">Service Area</div>
+      </div>
+      <div>
+        <div class="stat-num">45min</div>
+        <div class="stat-label">Estimated Time</div>
+      </div>
+      <div>
+        <div class="stat-num">0</div>
+        <div class="stat-label">Trips You Have to Make</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Service Menu</div>
+      <h2>Pick Your Shine</h2>
+      <p>"We bring the skills and equipment — you just provide water, power, and a parking spot. Washvix comes to your doorstep and gets to work."</p>
+    </div>
+
+    <div class="service-boxes">
+      <article class="service-box">
+        <div class="service-info"><div class="service-name">Basic Wash</div><div class="service-details"><span>Normal foam wash</span><span>Interior vacuum</span></div></div>
+        <div class="service-price-box"><div class="service-price-label">Hatchback</div><div class="service-price">₹299</div></div>
+        <div class="service-price-box"><div class="service-price-label">Large</div><div class="service-price">₹299</div></div>
+      </article>
+      <article class="service-box">
+        <div class="service-info"><div class="service-name">Premium Foam Wash</div><div class="service-details"><span>Polish foam wash</span><span>Interior vacuum</span><span>Hybrid ceramic coating</span></div></div>
+        <div class="service-price-box"><div class="service-price-label">Hatchback</div><div class="service-price">₹399</div></div>
+        <div class="service-price-box"><div class="service-price-label">Large</div><div class="service-price">₹449</div></div>
+      </article>
+      <article class="service-box">
+        <div class="service-info"><div class="service-name">Interior Deep Cleaning</div><div class="service-details"><span>Engine bay cleaning</span><span>Interior deep cleaning including seat, mat, dashboard, ceiling</span></div></div>
+        <div class="service-price-box"><div class="service-price-label">Hatchback</div><div class="service-price">₹799</div></div>
+        <div class="service-price-box"><div class="service-price-label">Large</div><div class="service-price">₹899</div></div>
+      </article>
+      <article class="service-box">
+        <div class="service-info"><div class="service-name">Exterior Polish</div><div class="service-details"><span>Rubbing polish</span><span>Shine restoration</span></div></div>
+        <div class="service-price-box"><div class="service-price-label">Hatchback</div><div class="service-price">₹799</div></div>
+        <div class="service-price-box"><div class="service-price-label">Large</div><div class="service-price">₹999</div></div>
+      </article>
+      <article class="service-box">
+        <div class="service-info"><div class="service-name">Full Detailing</div><div class="service-details"><span>Everything included</span><span>Interior + Exterior + Engine Bay</span></div></div>
+        <div class="service-price-box"><div class="service-price-label">Hatchback</div><div class="service-price">₹1,299</div></div>
+        <div class="service-price-box"><div class="service-price-label">Large</div><div class="service-price">₹1,499</div></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">The Process</div>
+      <h2>Three Steps, Zero Drive-Ins</h2>
+      <p>Washvix runs the whole shop out of one rig, so the process comes to wherever your car already is.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-no">01 / BOOK</div>
+        <h3>Pick a Slot</h3>
+        <p>Choose your package and a time that works — call, text, or book online. Tell us where the car will be parked.</p>
+      </div>
+      <div class="step">
+        <div class="step-no">02 / ARRIVE</div>
+        <h3>We Roll Up</h3>
+        <p>The Washvix rig detailing kit. No hose or outlet needed from you.</p>
+      </div>
+      <div class="step">
+        <div class="step-no">03 / SHINE</div>
+        <h3>Ride Elevated</h3>
+        <p>We work while you go about your day, then leave the spot as clean as the car. Step out to a driveway premiere.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="area">
+  <div class="wrap">
+    <div class="area-section">
+      <div class="area-copy">
+        <div class="eyebrow">Coverage</div>
+        <h2 style="font-size:clamp(32px,4vw,48px); text-transform:uppercase; margin:16px 0 20px;">Your Driveway Is Our Shop Floor</h2>
+        <p>Washvix operates within a 20-KM mobile radius, rolling out to homes, apartment complexes, and office lots. If there's a legal spot to park, there's a spot for us to work.</p>
+        <ul class="area-list">
+          <li><span class="dot"></span> Residential driveways & curbs</li>
+          <li><span class="dot"></span> Apartment & condo lots</li>
+          <li><span class="dot"></span> Office parking during the workday</li>
+          <li><span class="dot"></span> Same-week booking, most areas</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="reviews">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Customer Reviews</div>
+      <h2>Freshly Washed Words</h2>
+      <p>See what customers are saying about their Washvix experience, then share your own.</p>
+    </div>
+    <div class="reviews-layout">
+      <form class="review-form" id="reviewForm">
+        <h3>Leave A Review</h3>
+        <label for="reviewName">Name</label>
+        <input id="reviewName" name="name" type="text" required maxlength="80">
+        <label for="reviewRating">Rating</label>
+        <select id="reviewRating" name="rating" required>
+          <option value="5">5 stars</option>
+          <option value="4">4 stars</option>
+          <option value="3">3 stars</option>
+          <option value="2">2 stars</option>
+          <option value="1">1 star</option>
+        </select>
+        <label for="reviewService">Service</label>
+        <input id="reviewService" name="service" type="text" maxlength="80" placeholder="e.g. Premium Foam Wash">
+        <label for="reviewComment">Your review</label>
+        <textarea id="reviewComment" name="comment" required maxlength="500"></textarea>
+        <button class="btn btn-primary" type="submit">Post Review</button>
+        <p class="review-status" id="reviewStatus" role="status"></p>
+      </form>
+      <div class="reviews-list" id="reviewsList">
+        <div class="review-summary">
+          <span class="review-average" id="averageReview">0.0</span>
+          <span class="review-stars">★</span>
+          <span class="review-summary-label">Customer rating</span>
+        </div>
+        <div id="reviewItems"><div class="review-card"><p class="review-comment">Loading reviews...</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div>
+        <div class="foot-brand">
+          <svg class="brand-mark" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Left V Stroke -->
+            <path d="M18 20 L42 80 L52 56" stroke="var(--chrome)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- Right V Stroke -->
+            <path d="M34 18 L58 78 L80 18" stroke="var(--chrome)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- Blue Accent Line -->
+            <path d="M52 38 L72 82" stroke="var(--cyan)" stroke-width="4.5" stroke-linecap="round"/>
+          </svg>
+          <span class="brand-name">WASH<span class="accent">VIX</span></span>
+        </div>
+        <div class="foot-tag">Elevate Every Ride.</div>
+      </div>
+      <div class="foot-cols">
+        <div class="foot-col">
+          <h4>Menu</h4>
+          <a href="#home">Home</a>
+          <a href="#services">Packages</a>
+          <a href="#how">How it Works</a>
+          <a href="#area">Service Area</a>
+          <a href="#reviews">Reviews</a>
+        </div>
+        <div class="foot-col">
+          <h4>Contact</h4>
+          <a href="tel:+917008143470">(+91) 7008143470</a>
+          <a href="mailto:washvix@gmail.com?subject=Washvix%20Inquiry&body=Hi%20Washvix%2C%0A%0AI%20would%20like%20to%20ask%20about%20your%20services.%0A">washvix@gmail.com</a>
+          <span>Mon–Sun · 9.30AM–4PM</span>
+        </div>
+        <div class="foot-col">
+          <h4>Follow</h4>
+          <a href="https://www.instagram.com/washvix/followers/mutualOnly?hl=en#" target="_blank" rel="noopener noreferrer">Instagram</a>
+        
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 WASHVIX. ALL RIGHTS RESERVED.</span>
+      <span>MOBILE CAR WASH & DETAILING</span>
+    </div>
+  </div>
+</footer>
+
+<script src="api-integration.js"></script>
+<script>
+const localReviewsKey = 'washvix_custom_reviews';
+
+function escapeReviewHtml(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function getLocalReviews() {
+  try {
+    return JSON.parse(localStorage.getItem(localReviewsKey) || '[]');
+  } catch (error) {
+    return [];
+  }
+}
+
+function renderReviews(reviews) {
+  const container = document.getElementById('reviewItems');
+  const average = reviews.length
+    ? (reviews.reduce((total, review) => total + (Number(review.rating) || 5), 0) / reviews.length).toFixed(1)
+    : '0.0';
+  document.getElementById('averageReview').textContent = average;
+  if (!reviews.length) {
+    container.innerHTML = '';
+    return;
+  }
+
+  container.innerHTML = reviews.slice(0, 6).map(review => {
+    const rating = Math.min(5, Math.max(1, Number(review.rating) || 5));
+    return `<article class="review-card">
+      <div class="review-card-top">
+        <div><div class="review-name">${escapeReviewHtml(review.name)}</div><div class="review-meta">${escapeReviewHtml(review.service || 'Car Wash')}</div></div>
+        <div class="review-stars" aria-label="${rating} out of 5 stars">${'★'.repeat(rating)}</div>
+      </div>
+      <p class="review-comment">${escapeReviewHtml(review.comment)}</p>
+    </article>`;
+  }).join('');
+}
+
+async function loadPublicReviews() {
+  let reviews = [];
+  if (window.API && typeof window.API.getReviews === 'function') {
+    reviews = await window.API.getReviews();
+  }
+  if (!reviews.length) reviews = getLocalReviews();
+  renderReviews(reviews);
+}
+
+document.getElementById('reviewForm').addEventListener('submit', async event => {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const status = document.getElementById('reviewStatus');
+  const review = Object.fromEntries(new FormData(form).entries());
+  review.rating = Number(review.rating);
+  review.location = 'Rourkela';
+
+  status.textContent = 'Posting your review...';
+  let result = { success: false };
+  if (window.API && typeof window.API.submitReview === 'function') {
+    result = await window.API.submitReview(review);
+  }
+
+  if (result.success) {
+    status.textContent = 'Thank you. Your review is now live.';
+    form.reset();
+    document.getElementById('reviewRating').value = '5';
+    loadPublicReviews();
+    return;
+  }
+
+  const localReviews = getLocalReviews();
+  localReviews.unshift({ ...review, id: Date.now(), timestamp: new Date().toISOString() });
+  localStorage.setItem(localReviewsKey, JSON.stringify(localReviews));
+  status.textContent = 'Saved on this device. Start the Washvix server to share it with admin.';
+  form.reset();
+  document.getElementById('reviewRating').value = '5';
+  renderReviews(localReviews);
+});
+
+loadPublicReviews();
+</script>
+
+</body>
+</html>

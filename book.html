@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book a Wash — Washvix</title>
+  <meta name="description"
+    content="Book your mobile car wash and detailing service with Washvix. Choose your package and schedule your wash today.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0b0a0d;
+      --panel: #161319;
+      --panel-2: #1d1a21;
+      --blue: #0066ff;
+      --cyan: #0d99ff;
+      --chrome: #f4f2ef;
+      --steel: #948f9b;
+      --line: rgba(244, 242, 239, 0.09);
+      --grad: linear-gradient(120deg, var(--blue), var(--cyan) 55%, var(--blue));
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--ink);
+      color: var(--chrome);
+      font-family: 'Lato', sans-serif;
+      overflow-x: hidden;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+
+    .eyebrow {
+      font-family: 'Lato', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .eyebrow::before {
+      content: '';
+      width: 22px;
+      height: 1px;
+      background: var(--cyan);
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: 'Lato', sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      line-height: 0.95;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: inherit;
+    }
+
+    /* ---------- NAV ---------- */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      background: rgba(11, 10, 13, 0.72);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 28px;
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      flex: none;
+    }
+
+    .brand-name {
+      font-family: 'Lato', sans-serif;
+      font-size: 24px;
+      letter-spacing: 0.08em;
+      color: var(--chrome);
+    }
+
+    .brand-name .accent {
+      color: var(--cyan);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .nav-links a {
+      color: var(--steel);
+      transition: color .2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--chrome);
+    }
+
+    .nav-cta {
+      font-family: 'Lato', sans-serif;
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 10px 18px;
+      border-radius: 100px;
+      background: var(--grad);
+      background-size: 200% 100%;
+      color: #fff;
+      font-weight: 600;
+      transition: background-position .4s ease;
+    }
+
+    .nav-cta:hover {
+      background-position: 100% 0;
+    }
+
+    /* ---------- PAGE HEADER ---------- */
+    .page-header {
+      margin-top: 80px;
+      padding: 80px 0 60px;
+      text-align: center;
+      background:
+        radial-gradient(ellipse 60% 50% at 80% 0%, rgba(13, 153, 255, 0.16), transparent 60%),
+        radial-gradient(ellipse 50% 40% at 10% 100%, rgba(0, 102, 255, 0.10), transparent 60%),
+        var(--ink);
+    }
+
+    .page-header h1 {
+      font-size: clamp(40px, 7vw, 72px);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .page-header p {
+      color: var(--steel);
+      font-size: 17px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ---------- BOOKING SECTION ---------- */
+    .booking-section {
+      padding: 80px 0;
+    }
+
+    .booking-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* SERVICE SELECTION */
+    .form-group {
+      margin-bottom: 48px;
+    }
+
+    .form-group-label {
+      font-size: 18px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      display: block;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .service-option {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 20px;
+      cursor: pointer;
+      background: var(--panel);
+      transition: all .25s ease;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .service-option:hover {
+      background: var(--panel-2);
+      border-color: rgba(13, 153, 255, .35);
+    }
+
+    .service-option input[type="radio"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      flex: none;
+    }
+
+    .service-option input[type="radio"] {
+      accent-color: var(--cyan);
+    }
+
+    .service-details-text {
+      flex: 1;
+    }
+
+    .service-title {
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .service-desc {
+      color: var(--steel);
+      font-size: 13px;
+    }
+
+    .service-price-display {
+      display: none;
+    }
+
+    /* FORM INPUTS */
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .form-row.full {
+      grid-template-columns: 1fr;
+    }
+
+    .form-group-inline {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group-inline label {
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--steel);
+      margin-bottom: 8px;
+    }
+
+    .form-group-inline input,
+    .form-group-inline select,
+    .form-group-inline textarea {
+      font-family: 'Lato', sans-serif;
+      background: var(--panel);
+      color: var(--chrome);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px 16px;
+      font-size: 14px;
+      transition: border-color .25s ease;
+    }
+
+    .form-group-inline input:focus,
+    .form-group-inline select:focus,
+    .form-group-inline textarea:focus {
+      outline: none;
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 2px rgba(13, 153, 255, 0.15);
+    }
+
+    .form-group-inline select {
+      cursor: pointer;
+    }
+
+    /* VEHICLE TYPE */
+    .vehicle-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .vehicle-btn {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      background: var(--panel);
+      cursor: pointer;
+      transition: all .25s ease;
+      text-align: center;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 13px;
+    }
+
+    .vehicle-btn:hover {
+      background: var(--panel-2);
+      border-color: var(--cyan);
+    }
+
+    .vehicle-btn.active {
+      background: var(--grad);
+      color: #fff;
+      border-color: var(--cyan);
+    }
+
+    /* DATE & TIME */
+    .datetime-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    /* SUMMARY */
+    .booking-summary {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 28px;
+      margin: 48px 0;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .summary-row.divider {
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+      margin-top: 12px;
+      margin-bottom: 0;
+    }
+
+    .summary-total {
+      display: flex;
+      justify-content: space-between;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--cyan);
+    }
+
+    /* BUTTONS */
+    .btn {
+      font-family: 'Lato', sans-serif;
+      font-size: 13px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 16px 30px;
+      border-radius: 100px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: transform .25s ease, box-shadow .25s ease, background-position .4s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--grad);
+      background-size: 200% 100%;
+      color: #fff;
+      box-shadow: 0 10px 30px -8px rgba(13, 153, 255, 0.55);
+      width: 100%;
+      justify-content: center;
+      margin-top: 24px;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      background-position: 100% 0;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--chrome);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 60px 0 40px;
+      margin-top: 80px;
+    }
+
+    .foot-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+
+    .foot-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .foot-brand .brand-name {
+      font-size: 26px;
+    }
+
+    .foot-tag {
+      color: var(--steel);
+      font-size: 14px;
+      margin-top: 6px;
+    }
+
+    .foot-cols {
+      display: flex;
+      gap: 64px;
+      flex-wrap: wrap;
+    }
+
+    .foot-col h4 {
+      font-family: 'Lato', sans-serif;
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--steel);
+      margin-bottom: 16px;
+    }
+
+    .foot-col a,
+    .foot-col span {
+      display: block;
+      font-size: 14px;
+      color: var(--chrome);
+      margin-bottom: 10px;
+      opacity: .85;
+    }
+
+    .foot-col a:hover {
+      opacity: 1;
+      color: var(--cyan);
+    }
+
+    .foot-bottom {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+    }
+
+    .foot-bottom span {
+      font-family: 'Lato', sans-serif;
+      font-size: 12px;
+      color: var(--steel);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width:900px) {
+      .nav-links {
+        display: none;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .vehicle-options {
+        grid-template-columns: 1fr;
+      }
+
+      .datetime-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .page-header {
+        margin-top: 70px;
+        padding: 60px 0 40px;
+      }
+
+      .foot-cols {
+        gap: 36px;
+      }
+    }
+
+    @media (max-width:600px) {
+      .page-header h1 {
+        font-size: 32px;
+      }
+
+      .booking-summary {
+        padding: 20px;
+      }
+
+      .form-group-inline input,
+      .form-group-inline select {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <nav>
+      <a href="index.html" class="brand">
+        <svg class="brand-mark" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 20 L42 80 L52 56" stroke="var(--chrome)" stroke-width="7" stroke-linecap="round"
+            stroke-linejoin="round" />
+          <path d="M34 18 L58 78 L80 18" stroke="var(--chrome)" stroke-width="6" stroke-linecap="round"
+            stroke-linejoin="round" />
+          <path d="M52 38 L72 82" stroke="var(--cyan)" stroke-width="4.5" stroke-linecap="round" />
+        </svg>
+        <span class="brand-name">WASH<span class="accent">VIX</span></span>
+      </a>
+      <a class="nav-cta" href="index.html"
+        style="background:var(--panel); border:1px solid var(--line); color:var(--chrome); transition:all 0.25s ease;">
+        ← Back
+      </a>
+    </nav>
+  </header>
+
+  <section class="page-header">
+    <div class="wrap">
+      <h1>Book Your Wash</h1>
+      <p>Get the Washvix rig to your driveway. Choose your service, pick a time, and we'll roll up with everything we
+        need.</p>
+    </div>
+  </section>
+
+  <section class="booking-section">
+    <div class="wrap booking-container">
+      <form id="bookingForm">
+        <!-- STEP 1: SELECT SERVICE -->
+        <div class="form-group">
+          <label class="form-group-label">Choose Your Services</label>
+          <div class="services-grid">
+            <label class="service-option">
+              <input type="checkbox" name="service" value="basic" data-price-hatchback="299" data-price-large="299"
+                onchange="updateSummary()">
+              <div class="service-details-text">
+                <div class="service-title">Basic Wash</div>
+                <div class="service-desc">Normal foam wash • Interior vacuum</div>
+              </div>
+            </label>
+            <label class="service-option">
+              <input type="checkbox" name="service" value="premium" data-price-hatchback="399" data-price-large="449"
+                onchange="updateSummary()">
+              <div class="service-details-text">
+                <div class="service-title">Premium Foam Wash</div>
+                <div class="service-desc">Polish foam wash • Interior vacuum • Hybrid ceramic coating</div>
+              </div>
+            </label>
+            <label class="service-option">
+              <input type="checkbox" name="service" value="interior" data-price-hatchback="799" data-price-large="899"
+                onchange="updateSummary()">
+              <div class="service-details-text">
+                <div class="service-title">Interior Deep Cleaning</div>
+                <div class="service-desc">Engine bay cleaning • Interior deep cleaning (seat, mat, dashboard, ceiling)
+                </div>
+              </div>
+            </label>
+            <label class="service-option">
+              <input type="checkbox" name="service" value="polish" data-price-hatchback="799" data-price-large="999"
+                onchange="updateSummary()">
+              <div class="service-details-text">
+                <div class="service-title">Exterior Polish</div>
+                <div class="service-desc">Rubbing polish • Shine restoration</div>
+              </div>
+            </label>
+            <label class="service-option">
+              <input type="checkbox" name="service" value="full" data-price-hatchback="1299" data-price-large="1499"
+                onchange="updateSummary()">
+              <div class="service-details-text">
+                <div class="service-title">Full Detailing</div>
+                <div class="service-desc">Everything included • Interior + Exterior + Engine Bay</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- STEP 2: VEHICLE SIZE -->
+        <div class="form-group">
+          <label class="form-group-label">Vehicle Size</label>
+          <div class="vehicle-options">
+            <button type="button" class="vehicle-btn" data-size="hatchback" onclick="selectVehicle('hatchback', event)">
+              Hatchback / Sedan
+            </button>
+            <button type="button" class="vehicle-btn" data-size="large" onclick="selectVehicle('large', event)">
+              SUV / Large
+            </button>
+          </div>
+          <input type="hidden" id="vehicleSize" name="vehicleSize" required>
+        </div>
+
+        <!-- STEP 3: YOUR DETAILS -->
+        <div class="form-group">
+          <label class="form-group-label">Your Details</label>
+          <div class="form-row">
+            <div class="form-group-inline">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" name="name" placeholder="John Doe" required>
+            </div>
+            <div class="form-group-inline">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" name="phone" placeholder="+91 98765 43210" required>
+            </div>
+          </div>
+          <div class="form-row full">
+            <div class="form-group-inline">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" placeholder="you@example.com">
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 4: VEHICLE INFO -->
+        <div class="form-group">
+          <label class="form-group-label">Vehicle Information</label>
+          <div class="form-row">
+            <div class="form-group-inline">
+              <label for="vehicleMake">Model</label>
+              <input type="text" id="vehicleMake" name="vehicleMake" placeholder="Honda City" required>
+            </div>
+            <div class="form-group-inline">
+              <label for="vehicleYear"> Vehicle Buy Year</label>
+              <input type="number" id="vehicleYear" name="vehicleYear" placeholder="2022" min="2000" max="2099"
+                required>
+            </div>
+          </div>
+          <div class="form-row full">
+            <div class="form-group-inline">
+              <label for="vehicleColor">Color</label>
+              <input type="text" id="vehicleColor" name="vehicleColor" placeholder="Black" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 5: DATE & TIME -->
+        <div class="form-group">
+          <label class="form-group-label">Pick a Date & Time</label>
+          <div class="datetime-grid">
+            <div class="form-group-inline">
+              <label for="bookingDate">Preferred Date</label>
+              <input type="date" id="bookingDate" name="bookingDate" required>
+            </div>
+            <div class="form-group-inline">
+              <label for="bookingTime">Preferred Time</label>
+              <select id="bookingTime" name="bookingTime" required>
+                <option value="">-- Select a time slot --</option>
+                <option value="08:00">08:00 AM</option>
+
+                <option value="10:00">10:00 AM</option>
+
+                <option value="12:00">12:00 PM</option>
+
+                <option value="14:00">02:00 PM</option>
+
+                <option value="16:00">04:00 PM</option>              
+                  const EMAILJS_PUBLIC_KEY = '';
+                const EMAILJS_SERVICE_ID = 'service_immjx4l';
+                const EMAILJS_TEMPLATE_ID = 'YOUR_EMAILJS_TEMPLATE_ID';
+
+                
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 6: LOCATION -->
+        <div class="form-group">
+          <label class="form-group-label">Parking Location</label>
+          <div class="form-group-inline">
+            <label for="location">Address / Parking Details</label>
+            <textarea id="location" name="location"
+              placeholder="123 Main Street, Apartment 4B, Near the big oak tree..." rows="3" required></textarea>
+          </div>
+        </div>
+
+        <!-- SPECIAL REQUESTS -->
+        <div class="form-group">
+          <label class="form-group-label">Any Special Requests?</label>
+          <div class="form-group-inline">
+            <label for="requests">Notes (optional)</label>
+            <textarea id="requests" name="requests"
+              placeholder="Car has a scratch on the bumper... Pet inside the car... Limited parking..."
+              rows="3"></textarea>
+          </div>
+        </div>
+
+        <!-- BOOKING SUMMARY -->
+        <div class="booking-summary">
+          <div class="summary-row">
+            <span>Service:</span>
+            <span id="summaryService">—</span>
+          </div>
+          <div class="summary-row">
+            <span>Vehicle Size:</span>
+            <span id="summaryVehicle">—</span>
+          </div>
+          <div class="summary-row">
+            <span>Date & Time:</span>
+            <span id="summaryDateTime">—</span>
+          </div>
+          <div class="summary-row divider">
+            <span>Estimated Cost:</span>
+            <div class="summary-total">
+              <span id="summaryPrice">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUBMIT -->
+        <button type="submit" class="btn btn-primary">Confirm & Book Your Wash</button>
+        <p style="text-align:center; color:var(--steel); font-size:12px; margin-top:16px;">
+          We'll confirm your booking via phone within 2 hours.
+        </p>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot-top">
+        <div class="foot-brand">
+          <svg class="brand-mark" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"
+            style="width:40px;height:40px;">
+            <path d="M18 20 L42 80 L52 56" stroke="var(--chrome)" stroke-width="7" stroke-linecap="round"
+              stroke-linejoin="round" />
+            <path d="M34 18 L58 78 L80 18" stroke="var(--chrome)" stroke-width="6" stroke-linecap="round"
+              stroke-linejoin="round" />
+            <path d="M52 38 L72 82" stroke="var(--cyan)" stroke-width="4.5" stroke-linecap="round" />
+          </svg>
+          <div>
+            <div class="brand-name">WASH<span class="accent">VIX</span></div>
+            <div class="foot-tag">Elevate Every Ride</div>
+          </div>
+        </div>
+        <div class="foot-cols">
+          <div class="foot-col">
+            <h4>Navigation</h4>
+            <a href="index.html">← Back</a>
+          </div>
+          <div class="foot-col">
+            <h4>Contact</h4>
+            <a href="tel:+917008143470">(+91) 7008143470</a>
+            <a href="mailto:washvix@gmail.com?subject=Washvix%20Inquiry&body=Hi%20Washvix%2C%0A%0AI%20would%20like%20to%20ask%20about%20your%20services.%0A">washvix@gmail.com</a>
+            <span>Mon-Sun · 9.30AM-4PM</span>
+          </div>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <span>&copy; 2026 Washvix. All rights reserved.</span>
+        <span>Privacy Policy • Terms of Service</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    const API_BASE_URL = window.location.protocol === 'file:'
+      ? 'http://localhost:5000/api'
+      : `${window.location.origin}/api`;
+    const EMAILJS_PUBLIC_KEY = 'R9E-FtWp7S6BKggD1';
+    const EMAILJS_SERVICE_ID = 'service_immjx4l';
+    const EMAILJS_TEMPLATE_ID = 'template_rgs8p3d';
+    const ADMIN_EMAIL = 'washvix@gmail.com';
+
+    if (EMAILJS_PUBLIC_KEY !== 'YOUR_EMAILJS_PUBLIC_KEY') {
+      emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+    }
+
+    async function getBookedSlots() {
+      try {
+        const response = await fetch(`${API_BASE_URL}/booked-slots`);
+        const result = await response.json();
+        return result.success ? result.data : [];
+      } catch (error) {
+        console.error('Failed to fetch booked slots:', error);
+        return [];
+      }
+    }
+
+    async function getBookedSlotsForDate(date) {
+      if (!date) return [];
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/booked-slots/${date}`);
+        const result = await response.json();
+        return result.success ? result.data : [];
+      } catch (error) {
+        console.error('Failed to fetch booked slots for date:', error);
+        return [];
+      }
+    }
+
+    async function saveBooking(formData) {
+      const response = await fetch(`${API_BASE_URL}/bookings`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+
+      const result = await response.json();
+      if (!result.success) {
+        throw new Error(result.error || 'Booking could not be created');
+      }
+
+      return result.data;
+    }
+
+    async function sendAdminBookingEmail(formData, bookingId) {
+      if (EMAILJS_PUBLIC_KEY.startsWith('YOUR_') || EMAILJS_SERVICE_ID.startsWith('YOUR_') || EMAILJS_TEMPLATE_ID.startsWith('YOUR_')) {
+        console.warn('EmailJS is not configured. Add the EmailJS public key, service ID, and template ID in book.html.');
+        return false;
+      }
+
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        to_email: ADMIN_EMAIL,
+        to_name: 'Washvix Admin',
+        from_name: formData.name,
+        reply_to: formData.email || ADMIN_EMAIL,
+        booking_id: bookingId,
+        customer_name: formData.name,
+        customer_phone: formData.phone,
+        customer_email: formData.email || 'Not provided',
+        booking_date: formData.bookingDate,
+        booking_time: formData.bookingTime,
+        services: formData.services,
+        vehicle: `${formData.vehicleMake} (${formData.vehicleSize})`,
+        location: formData.location,
+        price: formData.price,
+        requests: formData.requests || 'None'
+      });
+      return true;
+    }
+
+    async function isSlotBooked(date, time) {
+      if (!date || !time) return false;
+      const bookings = await getBookedSlotsForDate(date);
+      return bookings.some(booking => booking.time === time);
+    }
+
+    async function updateTimeSlots() {
+      const dateInput = document.getElementById('bookingDate').value;
+      const timeSelect = document.getElementById('bookingTime');
+
+      if (!dateInput) {
+        timeSelect.value = '';
+        updateSummary();
+        return;
+      }
+
+      const slots = await getBookedSlotsForDate(dateInput);
+      const bookedTimes = slots.map(slot => slot.time);
+      const options = timeSelect.querySelectorAll('option');
+
+      options.forEach((option, index) => {
+        if (index === 0) return;
+
+        const time = option.value;
+        if (bookedTimes.includes(time)) {
+          option.disabled = true;
+          if (!option.textContent.includes('(Booked)')) {
+            option.textContent = option.textContent + ' (Booked)';
+          }
+        } else {
+          option.disabled = false;
+          option.textContent = option.textContent.replace(' (Booked)', '');
+        }
+      });
+
+      timeSelect.value = '';
+      updateSummary();
+    }
+
+    function selectVehicle(size, event) {
+      event.preventDefault();
+      document.querySelectorAll('.vehicle-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById('vehicleSize').value = size;
+      updateSummary();
+    }
+
+    function updateSummary() {
+      const serviceCheckboxes = document.querySelectorAll('input[name="service"]:checked');
+      const vehicleSize = document.getElementById('vehicleSize').value;
+      const bookingDate = document.getElementById('bookingDate').value;
+      const bookingTime = document.getElementById('bookingTime').value;
+
+      if (serviceCheckboxes.length > 0) {
+        const serviceNames = Array.from(serviceCheckboxes).map(cb => cb.closest('.service-option').querySelector('.service-title').textContent).join(', ');
+        document.getElementById('summaryService').textContent = serviceNames;
+      } else {
+        document.getElementById('summaryService').textContent = '—';
+      }
+
+      document.getElementById('summaryVehicle').textContent = vehicleSize ? (vehicleSize === 'hatchback' ? 'Hatchback / Sedan' : 'SUV / Large') : '—';
+
+      if (bookingDate && bookingTime) {
+        const dateObj = new Date(bookingDate + 'T00:00:00');
+        const dateStr = dateObj.toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' });
+        const timeStr = new Date('2000-01-01T' + bookingTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        document.getElementById('summaryDateTime').textContent = dateStr + ' at ' + timeStr;
+      } else {
+        document.getElementById('summaryDateTime').textContent = '—';
+      }
+
+      if (serviceCheckboxes.length > 0 && vehicleSize) {
+        let totalPrice = 0;
+        serviceCheckboxes.forEach(checkbox => {
+          const priceAttr = vehicleSize === 'large' ? 'data-price-large' : 'data-price-hatchback';
+          const price = parseInt(checkbox.getAttribute(priceAttr));
+          totalPrice += price;
+        });
+        document.getElementById('summaryPrice').textContent = '₹' + totalPrice.toLocaleString('en-IN');
+      } else {
+        document.getElementById('summaryPrice').textContent = '—';
+      }
+    }
+
+    document.querySelectorAll('input[name="service"]').forEach(checkbox => {
+      checkbox.addEventListener('change', updateSummary);
+    });
+    document.getElementById('bookingDate').addEventListener('change', updateTimeSlots);
+    document.getElementById('bookingTime').addEventListener('change', updateSummary);
+    document.getElementById('vehicleSize').addEventListener('change', updateSummary);
+
+    document.getElementById('bookingForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const bookingDate = document.getElementById('bookingDate').value;
+      const bookingTime = document.getElementById('bookingTime').value;
+
+      if (await isSlotBooked(bookingDate, bookingTime)) {
+        alert('Sorry! This time slot has just been booked. Please select another time.');
+        await updateTimeSlots();
+        return;
+      }
+
+      const formData = {
+        services: Array.from(document.querySelectorAll('input[name="service"]:checked')).map(cb => cb.value).join(', '),
+        vehicleSize: document.getElementById('vehicleSize').value,
+        name: document.getElementById('name').value,
+        phone: document.getElementById('phone').value,
+        email: document.getElementById('email').value,
+        vehicleMake: document.getElementById('vehicleMake').value,
+        vehicleYear: document.getElementById('vehicleYear').value,
+        vehicleColor: document.getElementById('vehicleColor').value,
+        bookingDate: bookingDate,
+        bookingTime: bookingTime,
+        location: document.getElementById('location').value,
+        requests: document.getElementById('requests').value,
+        price: document.getElementById('summaryPrice').textContent
+      };
+
+      try {
+        const savedBooking = await saveBooking(formData);
+        console.log('Booking submitted:', savedBooking);
+
+        try {
+          await sendAdminBookingEmail(formData, savedBooking.id);
+        } catch (emailError) {
+          console.error('EmailJS notification failed:', emailError);
+        }
+
+        alert('Booking confirmed! We will contact you within 2 hours to confirm your slot.\n\nBooking Details:\n' +
+          'Phone: ' + formData.phone + '\n' +
+          'Date: ' + formData.bookingDate + ' at ' + formData.bookingTime + '\n' +
+          'Estimated Cost: ' + formData.price);
+
+        this.reset();
+        document.querySelectorAll('.vehicle-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById('vehicleSize').value = '';
+        await updateTimeSlots();
+      } catch (error) {
+        alert(error.message || 'Booking could not be saved. Please try again.');
+      }
+    });
+
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('bookingDate').min = today;
+
+    document.addEventListener('DOMContentLoaded', function () {
+      updateTimeSlots();
+    });
+  </script>
+</body>
+
+</html>

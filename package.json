@@ -1,0 +1,32 @@
+{
+  "name": "washvix-backend",
+  "version": "1.0.0",
+  "description": "Backend API server for Washvix car washing booking system",
+  "main": "backend.js",
+  "scripts": {
+    "start": "node backend.js",
+    "dev": "nodemon backend.js"
+  },
+  "keywords": [
+    "washvix",
+    "car-wash",
+    "booking",
+    "api"
+  ],
+  "author": "Washvix Team",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.18.2",
+    "nodemailer": "^6.9.14",
+    "sqlite3": "^5.1.7",
+    "twilio": "^5.2.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
