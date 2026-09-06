@@ -875,15 +875,11 @@
               <select id="bookingTime" name="bookingTime" required>
                 <option value="">-- Select a time slot --</option>
                 <option value="08:00">08:00 AM</option>
-                <option value="09:00">09:00 AM</option>
                 <option value="10:00">10:00 AM</option>
-                <option value="11:00">11:00 AM</option>
                 <option value="12:00">12:00 PM</option>
-                <option value="13:00">01:00 PM</option>
                 <option value="14:00">02:00 PM</option>
-                <option value="15:00">03:00 PM</option>
                 <option value="16:00">04:00 PM</option>
-                <option value="17:00">05:00 PM</option>
+                <option value="18:00">06:00 PM</option>
               </select>
             </div>
           </div>
@@ -938,7 +934,7 @@
         <!-- SUBMIT -->
         <button type="submit" id="submitBtn" class="btn btn-primary">Confirm & Book Your Wash</button>
         <p style="text-align:center; color:var(--steel); font-size:12px; margin-top:16px;">
-          We'll confirm your booking via phone within 2 hours.
+          Your booking will be confirmed within 2 hours.
         </p>
       </form>
     </div>
@@ -949,8 +945,7 @@
     <div class="modal-card">
       <div class="modal-icon">✓</div>
       <h2 class="modal-title">Booking Confirmed!</h2>
-      <p class="modal-sub">Thank you for choosing Washvix. Our team will contact you within 2 hours to confirm your
-        slot.</p>
+      <p class="modal-sub">Thank you for choosing Washvix. Your booking will be confirmed within 2 hours.</p>
 
       <div class="modal-receipt">
         <div class="receipt-row"><span>Booking Ref:</span> <strong id="modalBookingId">#WX-1001</strong></div>
@@ -964,8 +959,7 @@
       </div>
 
       <div class="modal-actions">
-        <button type="button" class="btn btn-secondary" onclick="window.print()">🖨 Print Receipt</button>
-        <button type="button" class="btn btn-primary" onclick="closeSuccessModal()">Done</button>
+        <button type="button" class="btn btn-primary" style="width:100%; justify-content:center;" onclick="closeSuccessModal()">Done</button>
       </div>
     </div>
   </div>
