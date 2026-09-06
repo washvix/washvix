@@ -21,6 +21,7 @@ function initializeSQLiteDatabase() {
   return new Promise((resolve, reject) => {
     if (!USE_SQLITE) {
       console.log('[Database] Using JSON file storage (SQLite disabled)');
+      useJsonFallback = true;
       initializeJsonDatabase();
       resolve();
       return;
