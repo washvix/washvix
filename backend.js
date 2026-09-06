@@ -8,8 +8,8 @@ const nodemailer = require('nodemailer');
 const twilio = require('twilio');
 const crypto = require('crypto');
 const path = require('path');
-const db = require('./database');
 require('dotenv').config();
+const db = require('./database');
 
 const app = express();
 const PORT = process.env.PORT || 5000;

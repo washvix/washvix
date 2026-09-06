@@ -1077,17 +1077,19 @@
     async function getBookedSlotsForDate(date) {
       if (!date) return [];
       let apiSlots = [];
+      let apiAvailable = false;
       try {
         const response = await fetch(`${API_BASE_URL}/booked-slots/${date}`, { cache: 'no-store' });
         const result = await response.json();
         if (result.success) {
           apiSlots = result.data || [];
+          apiAvailable = true;
         }
       } catch (error) {
         console.warn('Backend API unreachable, using local slot data fallback');
       }
 
-      const localSlots = getLocalBookedSlotsForDate(date);
+      const localSlots = apiAvailable ? [] : getLocalBookedSlotsForDate(date);
       const combined = [...apiSlots, ...localSlots];
       const seenTimes = new Set();
       return combined.filter(s => {
@@ -1125,11 +1127,11 @@
         status: 'pending'
       };
 
-      saveToLocalStorage(bookingRecord);
-
       if (!apiBooking && apiError) {
         throw new Error(apiError);
       }
+
+      saveToLocalStorage(bookingRecord);
 
       return bookingRecord;
     }
