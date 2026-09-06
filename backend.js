@@ -7,6 +7,7 @@ const cors = require('cors');
 const nodemailer = require('nodemailer');
 const twilio = require('twilio');
 const crypto = require('crypto');
+const path = require('path');
 const db = require('./database');
 require('dotenv').config();
 
@@ -21,6 +22,11 @@ const AUTH_COOKIE = 'washvix_admin_session';
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(express.static(__dirname));
+
+// Friendly routes for the main customer and admin pages.
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
+app.get('/book', (req, res) => res.sendFile(path.join(__dirname, 'book.html')));
+app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'admin.html')));
 
 function parseCookies(req) {
   return Object.fromEntries((req.headers.cookie || '').split(';').filter(Boolean).map(cookie => {

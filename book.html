@@ -714,12 +714,7 @@
 
                 <option value="14:00">02:00 PM</option>
 
-                <option value="16:00">04:00 PM</option>              
-                  const EMAILJS_PUBLIC_KEY = '';
-                const EMAILJS_SERVICE_ID = 'service_immjx4l';
-                const EMAILJS_TEMPLATE_ID = 'YOUR_EMAILJS_TEMPLATE_ID';
-
-                
+                <option value="16:00">04:00 PM</option>
               </select>
             </div>
           </div>
@@ -843,7 +838,7 @@
       if (!date) return [];
 
       try {
-        const response = await fetch(`${API_BASE_URL}/booked-slots/${date}`);
+        const response = await fetch(`${API_BASE_URL}/booked-slots/${date}`, { cache: 'no-store' });
         const result = await response.json();
         return result.success ? result.data : [];
       } catch (error) {
@@ -991,7 +986,7 @@
       const bookingTime = document.getElementById('bookingTime').value;
 
       if (await isSlotBooked(bookingDate, bookingTime)) {
-        alert('Sorry! This time slot has just been booked. Please select another time.');
+        alert('This time slot is unavailable. Please select another available time.');
         await updateTimeSlots();
         return;
       }
