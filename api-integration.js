@@ -10,8 +10,11 @@ const API_BASE_URL = window.location.protocol === 'file:'
     ? 'https://washvix.onrender.com/api'
     : `${window.location.origin}/api`;
 
-function apiFetch(url, options = {}) {
-  return fetch(url, { ...options, credentials: 'include' });
+function apiFetch(url, options = {}, timeoutMs = 4000) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+  return fetch(url, { ...options, credentials: 'include', signal: controller.signal })
+    .finally(() => clearTimeout(timeoutId));
 }
 
 // ============================================

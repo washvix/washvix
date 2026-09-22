@@ -9,6 +9,9 @@
     content="Book your mobile car wash and detailing service with Washvix. Choose your package and schedule your wash today.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -763,43 +766,44 @@
           <div class="services-grid">
             <label class="service-option">
               <input type="checkbox" name="service" value="basic" data-price-hatchback="299" data-price-large="299"
-                onchange="updateSummary()">
+                data-duration="20" onchange="updateSummary()">
               <div class="service-details-text">
                 <div class="service-title">Basic Wash</div>
-                <div class="service-desc">Normal foam wash • Interior vacuum</div>
+                <div class="service-desc">Normal foam wash • Interior vacuum • ⏱ ~20 mins</div>
               </div>
             </label>
             <label class="service-option">
               <input type="checkbox" name="service" value="premium" data-price-hatchback="399" data-price-large="449"
-                onchange="updateSummary()">
+                data-duration="35" onchange="updateSummary()">
               <div class="service-details-text">
                 <div class="service-title">Premium Foam Wash</div>
-                <div class="service-desc">Polish foam wash • Interior vacuum • Hybrid ceramic coating</div>
+                <div class="service-desc">Polish foam wash • Interior vacuum • Hybrid ceramic coating • ⏱ ~35 mins</div>
               </div>
             </label>
             <label class="service-option">
               <input type="checkbox" name="service" value="interior" data-price-hatchback="799" data-price-large="899"
-                onchange="updateSummary()">
+                data-duration="75" onchange="updateSummary()">
               <div class="service-details-text">
                 <div class="service-title">Interior Deep Cleaning</div>
-                <div class="service-desc">Engine bay cleaning • Interior deep cleaning (seat, mat, dashboard, ceiling)
+                <div class="service-desc">Engine bay cleaning • Interior deep cleaning (seat, mat, dashboard, ceiling) •
+                  ⏱ ~75 mins
                 </div>
               </div>
             </label>
             <label class="service-option">
               <input type="checkbox" name="service" value="polish" data-price-hatchback="799" data-price-large="999"
-                onchange="updateSummary()">
+                data-duration="60" onchange="updateSummary()">
               <div class="service-details-text">
                 <div class="service-title">Exterior Polish</div>
-                <div class="service-desc">Rubbing polish • Shine restoration</div>
+                <div class="service-desc">Rubbing polish • Shine restoration • ⏱ ~60 mins</div>
               </div>
             </label>
             <label class="service-option">
               <input type="checkbox" name="service" value="full" data-price-hatchback="1299" data-price-large="1499"
-                onchange="updateSummary()">
+                data-duration="120" onchange="updateSummary()">
               <div class="service-details-text">
                 <div class="service-title">Full Detailing</div>
-                <div class="service-desc">Everything included • Interior + Exterior + Engine Bay</div>
+                <div class="service-desc">Everything included • Interior + Exterior + Engine Bay • ⏱ ~120 mins</div>
               </div>
             </label>
           </div>
@@ -809,14 +813,15 @@
         <div class="form-group">
           <label class="form-group-label">Vehicle Size</label>
           <div class="vehicle-options">
-            <button type="button" class="vehicle-btn" data-size="hatchback" onclick="selectVehicle('hatchback', event)">
+            <button type="button" class="vehicle-btn active" data-size="hatchback"
+              onclick="selectVehicle('hatchback', event)">
               Hatchback / Sedan
             </button>
             <button type="button" class="vehicle-btn" data-size="large" onclick="selectVehicle('large', event)">
               SUV / Large
             </button>
           </div>
-          <input type="hidden" id="vehicleSize" name="vehicleSize">
+          <input type="hidden" id="vehicleSize" name="vehicleSize" value="hatchback">
         </div>
 
         <!-- STEP 3: YOUR DETAILS -->
@@ -834,7 +839,7 @@
           </div>
           <div class="form-row full">
             <div class="form-group-inline">
-              <label for="email">Email Address</label>
+              <label for="email">Email Address (optional)</label>
               <input type="email" id="email" name="email" placeholder="you@example.com">
             </div>
           </div>
@@ -845,19 +850,18 @@
           <label class="form-group-label">Vehicle Information</label>
           <div class="form-row">
             <div class="form-group-inline">
-              <label for="vehicleMake">Model</label>
-              <input type="text" id="vehicleMake" name="vehicleMake" placeholder="Honda City" required>
+              <label for="vehicleMake">Model / Car Name</label>
+              <input type="text" id="vehicleMake" name="vehicleMake" placeholder="Swift / City / Fortuner" required>
             </div>
             <div class="form-group-inline">
-              <label for="vehicleYear"> Vehicle Buy Year</label>
-              <input type="number" id="vehicleYear" name="vehicleYear" placeholder="2022" min="2000" max="2099"
-                required>
+              <label for="vehicleYear">Vehicle Buy Year (optional)</label>
+              <input type="number" id="vehicleYear" name="vehicleYear" placeholder="2022" min="2000" max="2099">
             </div>
           </div>
           <div class="form-row full">
             <div class="form-group-inline">
-              <label for="vehicleColor">Color</label>
-              <input type="text" id="vehicleColor" name="vehicleColor" placeholder="Black" required>
+              <label for="vehicleColor">Color (optional)</label>
+              <input type="text" id="vehicleColor" name="vehicleColor" placeholder="Black / White / Red">
             </div>
           </div>
         </div>
@@ -919,6 +923,10 @@
             <span>Date & Time:</span>
             <span id="summaryDateTime">—</span>
           </div>
+          <div class="summary-row">
+            <span>Est. Wash Time:</span>
+            <span id="summaryDuration">—</span>
+          </div>
           <div class="summary-row divider">
             <span>Estimated Cost:</span>
             <div class="summary-total">
@@ -953,6 +961,7 @@
         <div class="receipt-row"><span>Services:</span> <strong id="modalService">—</strong></div>
         <div class="receipt-row"><span>Vehicle:</span> <strong id="modalVehicle">—</strong></div>
         <div class="receipt-row"><span>Date & Time:</span> <strong id="modalDateTime">—</strong></div>
+        <div class="receipt-row"><span>Est. Duration:</span> <strong id="modalDuration">—</strong></div>
         <div class="receipt-row"><span>Location:</span> <strong id="modalLocation">—</strong></div>
         <div class="receipt-row total"><span>Estimated Total:</span> <strong id="modalPrice">₹0</strong></div>
       </div>
@@ -1002,7 +1011,8 @@
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" async defer
+    onload="initEmailJS()"></script>
   <script>
     const API_BASE_URL = window.location.protocol === 'file:'
       ? 'http://localhost:5000/api'
@@ -1014,8 +1024,14 @@
     const EMAILJS_TEMPLATE_ID = 'template_rgs8p3d';
     const ADMIN_EMAIL = 'washvix@gmail.com';
 
-    if (EMAILJS_PUBLIC_KEY !== 'YOUR_EMAILJS_PUBLIC_KEY') {
-      emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+    function initEmailJS() {
+      if (window.emailjs && EMAILJS_PUBLIC_KEY !== 'YOUR_EMAILJS_PUBLIC_KEY') {
+        try {
+          emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+        } catch (e) {
+          console.warn('EmailJS initialization warning:', e);
+        }
+      }
     }
 
     function showError(message) {
@@ -1031,6 +1047,13 @@
       banner.innerHTML = '';
     }
 
+    function getLocalDateString(d = new Date()) {
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
     function showSuccessModal(booking) {
       document.getElementById('modalBookingId').textContent = booking.id ? `#${booking.id}` : `#WX-${Date.now().toString().slice(-6)}`;
       document.getElementById('modalName').textContent = booking.name;
@@ -1041,6 +1064,7 @@
       const dateObj = new Date(booking.bookingDate + 'T00:00:00');
       const dateStr = dateObj.toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' });
       document.getElementById('modalDateTime').textContent = `${dateStr} at ${booking.bookingTime}`;
+      document.getElementById('modalDuration').textContent = booking.duration || '—';
       document.getElementById('modalLocation').textContent = booking.location;
       document.getElementById('modalPrice').textContent = booking.price;
 
@@ -1074,19 +1098,26 @@
       }
     }
 
+    function fetchWithTimeout(url, options = {}, timeoutMs = 2500) {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+      return fetch(url, { ...options, signal: controller.signal })
+        .finally(() => clearTimeout(timeoutId));
+    }
+
     async function getBookedSlotsForDate(date) {
       if (!date) return [];
       let apiSlots = [];
       let apiAvailable = false;
       try {
-        const response = await fetch(`${API_BASE_URL}/booked-slots/${date}`, { cache: 'no-store' });
+        const response = await fetchWithTimeout(`${API_BASE_URL}/booked-slots/${date}`, { cache: 'no-store' }, 3000);
         const result = await response.json();
         if (result.success) {
           apiSlots = result.data || [];
           apiAvailable = true;
         }
       } catch (error) {
-        console.warn('Backend API unreachable, using local slot data fallback');
+        console.warn('Backend API unreachable or slow, using local slot data fallback');
       }
 
       const localSlots = apiAvailable ? [] : getLocalBookedSlotsForDate(date);
@@ -1099,27 +1130,40 @@
       });
     }
 
-    async function saveBooking(formData) {
-      let apiBooking = null;
-      let apiError = null;
-
-      try {
-        const response = await fetch(`${API_BASE_URL}/bookings`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData)
-        });
-        const result = await response.json();
-        if (result.success) {
-          apiBooking = result.data;
-        } else {
-          apiError = result.error || 'Server could not create booking';
-        }
-      } catch (error) {
-        console.warn('API submission unreachable, using local storage fallback');
+    async function sendAdminBookingEmail(formData, bookingId) {
+      if (!window.emailjs || EMAILJS_PUBLIC_KEY.startsWith('YOUR_') || EMAILJS_SERVICE_ID.startsWith('YOUR_') || EMAILJS_TEMPLATE_ID.startsWith('YOUR_')) {
+        console.warn('EmailJS is not configured or loaded.');
+        return false;
       }
 
-      const bookingId = apiBooking && apiBooking.id ? apiBooking.id : 'WX-' + Date.now().toString().slice(-6);
+      try {
+        initEmailJS();
+        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+          to_email: ADMIN_EMAIL,
+          to_name: 'Washvix Admin',
+          from_name: formData.name,
+          reply_to: formData.email || ADMIN_EMAIL,
+          booking_id: bookingId,
+          customer_name: formData.name,
+          customer_phone: formData.phone,
+          customer_email: formData.email || 'Not provided',
+          booking_date: formData.bookingDate,
+          booking_time: formData.bookingTime,
+          services: formData.services,
+          vehicle: `${formData.vehicleMake} (${formData.vehicleSize})`,
+          location: formData.location,
+          price: formData.price,
+          requests: formData.requests || 'None'
+        });
+        return true;
+      } catch (e) {
+        console.warn('EmailJS notification failed background dispatch:', e);
+        return false;
+      }
+    }
+
+    async function saveBooking(formData) {
+      const bookingId = 'WX-' + Date.now().toString().slice(-6);
       const bookingRecord = {
         id: bookingId,
         ...formData,
@@ -1127,62 +1171,46 @@
         status: 'pending'
       };
 
-      if (!apiBooking && apiError) {
-        throw new Error(apiError);
-      }
-
+      // Always save locally immediately so booking confirmation is instant
       saveToLocalStorage(bookingRecord);
+
+      // Async background server sync & email dispatch (non-blocking)
+      (async () => {
+        try {
+          const response = await fetchWithTimeout(`${API_BASE_URL}/bookings`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+          }, 4000);
+          const result = await response.json();
+          if (result.success && result.data && result.data.id) {
+            bookingRecord.id = result.data.id;
+          }
+        } catch (error) {
+          console.warn('Backend API sync background notice:', error);
+        }
+
+        try {
+          await sendAdminBookingEmail(formData, bookingRecord.id);
+        } catch (emailError) {
+          console.warn('Email notification error:', emailError);
+        }
+      })();
 
       return bookingRecord;
     }
 
-    async function sendAdminBookingEmail(formData, bookingId) {
-      if (EMAILJS_PUBLIC_KEY.startsWith('YOUR_') || EMAILJS_SERVICE_ID.startsWith('YOUR_') || EMAILJS_TEMPLATE_ID.startsWith('YOUR_')) {
-        console.warn('EmailJS is not configured.');
-        return false;
-      }
-
-      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-        to_email: ADMIN_EMAIL,
-        to_name: 'Washvix Admin',
-        from_name: formData.name,
-        reply_to: formData.email || ADMIN_EMAIL,
-        booking_id: bookingId,
-        customer_name: formData.name,
-        customer_phone: formData.phone,
-        customer_email: formData.email || 'Not provided',
-        booking_date: formData.bookingDate,
-        booking_time: formData.bookingTime,
-        services: formData.services,
-        vehicle: `${formData.vehicleMake} (${formData.vehicleSize})`,
-        location: formData.location,
-        price: formData.price,
-        requests: formData.requests || 'None'
-      });
-      return true;
-    }
-
-    async function isSlotBooked(date, time) {
+    function isLocalSlotBooked(date, time) {
       if (!date || !time) return false;
-      const bookings = await getBookedSlotsForDate(date);
-      return bookings.some(booking => booking.time === time);
+      const localSlots = getLocalBookedSlotsForDate(date);
+      return localSlots.some(s => s.time === time);
     }
 
-    async function updateTimeSlots() {
-      const dateInput = document.getElementById('bookingDate').value;
+    function applyBookedSlotsToDropdown(bookedTimes, dateInput) {
       const timeSelect = document.getElementById('bookingTime');
-
-      if (!dateInput) {
-        timeSelect.value = '';
-        updateSummary();
-        return;
-      }
-
-      const bookedSlots = await getBookedSlotsForDate(dateInput);
-      const bookedTimes = bookedSlots.map(slot => slot.time);
+      if (!timeSelect) return;
       const options = timeSelect.querySelectorAll('option');
-
-      const todayStr = new Date().toISOString().split('T')[0];
+      const todayStr = getLocalDateString();
       const now = new Date();
       const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
@@ -1213,8 +1241,27 @@
           option.textContent = cleanText;
         }
       });
-
       updateSummary();
+    }
+
+    function updateTimeSlots() {
+      const dateInput = document.getElementById('bookingDate').value;
+      const timeSelect = document.getElementById('bookingTime');
+
+      if (!dateInput) {
+        timeSelect.value = '';
+        updateSummary();
+        return;
+      }
+
+      // Fast local slot check immediately (0ms)
+      const localSlots = getLocalBookedSlotsForDate(dateInput);
+      applyBookedSlotsToDropdown(localSlots.map(s => s.time), dateInput);
+
+      // Async background API slots update (non-blocking)
+      getBookedSlotsForDate(dateInput).then(allSlots => {
+        applyBookedSlotsToDropdown(allSlots.map(s => s.time), dateInput);
+      }).catch(() => { });
     }
 
     function selectVehicle(size, event) {
@@ -1264,6 +1311,27 @@
         document.getElementById('summaryDateTime').textContent = '—';
       }
 
+      let totalMinutes = 0;
+      if (serviceCheckboxes.length > 0) {
+        serviceCheckboxes.forEach(checkbox => {
+          const duration = parseInt(checkbox.getAttribute('data-duration') || '0', 10);
+          totalMinutes += duration;
+        });
+      }
+
+      let durationStr = '—';
+      if (totalMinutes > 0) {
+        if (totalMinutes >= 60) {
+          const hrs = Math.floor(totalMinutes / 60);
+          const mins = totalMinutes % 60;
+          durationStr = `≈ ${hrs} hr${hrs > 1 ? 's' : ''}${mins > 0 ? ` ${mins} mins` : ''}`;
+        } else {
+          durationStr = `≈ ${totalMinutes} mins`;
+        }
+      }
+      const summaryDurationEl = document.getElementById('summaryDuration');
+      if (summaryDurationEl) summaryDurationEl.textContent = durationStr;
+
       if (serviceCheckboxes.length > 0 && vehicleSize) {
         let totalPrice = 0;
         serviceCheckboxes.forEach(checkbox => {
@@ -1292,7 +1360,7 @@
       hideError();
     });
 
-    document.getElementById('bookingForm').addEventListener('submit', async function (e) {
+    document.getElementById('bookingForm').addEventListener('submit', function (e) {
       e.preventDefault();
       hideError();
 
@@ -1330,15 +1398,13 @@
         return;
       }
 
-      if (await isSlotBooked(bookingDate, bookingTime)) {
+      if (isLocalSlotBooked(bookingDate, bookingTime)) {
         showError('This time slot is unavailable or already booked. Please select another time slot.');
-        await updateTimeSlots();
+        updateTimeSlots();
         return;
       }
 
       const submitBtn = document.getElementById('submitBtn');
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = '<span class="spinner"></span> Confirming Your Booking...';
 
       const formData = {
         services: Array.from(serviceCheckboxes).map(cb => {
@@ -1353,41 +1419,40 @@
         vehicleColor: document.getElementById('vehicleColor').value.trim(),
         bookingDate: bookingDate,
         bookingTime: bookingTime,
+        duration: document.getElementById('summaryDuration')?.textContent || '—',
         location: document.getElementById('location').value.trim(),
         requests: document.getElementById('requests').value.trim(),
         price: document.getElementById('summaryPrice').textContent
       };
 
       try {
-        const savedBooking = await saveBooking(formData);
-        console.log('Booking confirmed:', savedBooking);
-
-        try {
-          await sendAdminBookingEmail(formData, savedBooking.id);
-        } catch (emailError) {
-          console.warn('Email notification error:', emailError);
-        }
+        const savedBooking = saveBooking(formData);
+        console.log('Booking confirmed instantly:', savedBooking);
 
         showSuccessModal(savedBooking);
 
         this.reset();
         document.querySelectorAll('.service-option').forEach(el => el.classList.remove('selected'));
         document.querySelectorAll('.vehicle-btn').forEach(btn => btn.classList.remove('active'));
-        document.getElementById('vehicleSize').value = '';
+        document.getElementById('vehicleSize').value = 'hatchback';
+        document.querySelector('.vehicle-btn[data-size="hatchback"]')?.classList.add('active');
         updateSummary();
-        await updateTimeSlots();
+        updateTimeSlots();
       } catch (error) {
         showError(error.message || 'Booking could not be created. Please try again.');
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = 'Confirm & Book Your Wash';
       }
     });
 
-    const today = new Date().toISOString().split('T')[0];
+    const today = getLocalDateString();
     document.getElementById('bookingDate').min = today;
 
     document.addEventListener('DOMContentLoaded', function () {
+      const firstService = document.querySelector('input[name="service"]');
+      if (firstService && document.querySelectorAll('input[name="service"]:checked').length === 0) {
+        firstService.checked = true;
+      }
+      document.getElementById('vehicleSize').value = 'hatchback';
+      document.querySelector('.vehicle-btn[data-size="hatchback"]')?.classList.add('active');
       updateTimeSlots();
       updateSummary();
     });

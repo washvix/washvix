@@ -13,9 +13,9 @@ const db = require('./database');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
-const AUTH_SECRET = process.env.AUTH_SECRET || 'washvix-secret-key-2026';
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+const AUTH_SECRET = process.env.AUTH_SECRET;
 const AUTH_COOKIE = 'washvix_admin_session';
 
 // Middleware
@@ -181,14 +181,12 @@ async function sendAdminBookingNotification(booking) {
 // ADMIN AUTHENTICATION
 app.post('/api/auth/login', (req, res) => {
   const { username, password } = req.body || {};
-  
+
   const userStr = typeof username === 'string' ? username.trim().toLowerCase() : '';
-  const validUsernames = [ADMIN_USERNAME.toLowerCase(), 'admin', 'washvix'];
-  const validUser = validUsernames.includes(userStr);
+  const validUser = userStr === ADMIN_USERNAME.toLowerCase();
 
   const passStr = typeof password === 'string' ? password : '';
-  const validPasswords = [ADMIN_PASSWORD, 'admin123', 'washvix123'];
-  const validPass = validPasswords.some(p => safeEqual(passStr, p));
+  const validPass = safeEqual(passStr, ADMIN_PASSWORD);
 
   if (!validUser || !validPass) {
     return res.status(401).json({ success: false, error: 'Invalid admin credentials' });
@@ -323,7 +321,10 @@ app.post('/api/bookings', async (req, res) => {
       throw slotError;
     }
 
-    await sendAdminBookingNotification(savedBooking);
+    // Send admin notification asynchronously in background so booking response is instant
+    sendAdminBookingNotification(savedBooking).catch(err => {
+      console.error('Admin booking email notice error:', err.message);
+    });
 
     res.status(201).json({
       success: true,
@@ -837,6 +838,20 @@ db.initializeSQLiteDatabase().then(() => {
 ║     GET    /api/health                               ║
 ╚════════════════════════════════════════════════════════╝
     `);
+
+    // Automatic Render keep-alive self-ping service (prevents Render free tier from sleeping)
+    const selfPingUrl = process.env.KEEP_ALIVE_URL || (process.env.RENDER_EXTERNAL_URL ? `${process.env.RENDER_EXTERNAL_URL}/api/health` : 'https://washvix.onrender.com/api/health');
+    if (selfPingUrl) {
+      const httpLib = selfPingUrl.startsWith('https') ? require('https') : require('http');
+      setInterval(() => {
+        httpLib.get(selfPingUrl, (res) => {
+          console.log(`[Keep-Alive] Automated self-ping to ${selfPingUrl} -> Status: ${res.statusCode}`);
+        }).on('error', (err) => {
+          console.warn(`[Keep-Alive] Self-ping notice:`, err.message);
+        });
+      }, 10 * 60 * 1000);
+      console.log(`[Keep-Alive] Active ping scheduled every 10m for ${selfPingUrl}`);
+    }
   });
 }).catch(err => {
   console.error('Failed to initialize database:', err);

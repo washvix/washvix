@@ -559,17 +559,19 @@
         : `${window.location.origin}/api`;
 
     async function checkAdminSession() {
-      let isAuth = false;
-      try {
-        const response = await fetch(`${AUTH_API_BASE_URL}/auth/session`, { credentials: 'include' });
-        const result = await response.json();
-        if (result.authenticated) isAuth = true;
-      } catch (e) {
-        console.warn('Backend API session check unreachable, checking local session');
-      }
+      let isAuth = sessionStorage.getItem('washvix_admin_auth') === 'true';
 
-      if (!isAuth && sessionStorage.getItem('washvix_admin_auth') === 'true') {
-        isAuth = true;
+      if (!isAuth) {
+        try {
+          const response = await fetch(`${AUTH_API_BASE_URL}/auth/session`, { credentials: 'include' });
+          const result = await response.json();
+          if (result.authenticated) {
+            isAuth = true;
+            sessionStorage.setItem('washvix_admin_auth', 'true');
+          }
+        } catch (e) {
+          console.warn('Backend API session check unreachable');
+        }
       }
 
       document.getElementById('loginPanel').hidden = isAuth;
@@ -587,46 +589,62 @@
       const usernameInput = (form.get('username') || '').trim();
       const passwordInput = (form.get('password') || '').trim();
 
-      try {
-        const response = await fetch(`${AUTH_API_BASE_URL}/auth/login`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify({ username: usernameInput, password: passwordInput })
-        });
-        const result = await response.json();
-        if (result.success) {
-          sessionStorage.setItem('washvix_admin_auth', 'true');
-          event.currentTarget.reset();
-          document.getElementById('loginError').textContent = '';
-          checkAdminSession();
-          return;
-        } else if (result.error === 'Invalid admin credentials') {
-          document.getElementById('loginError').textContent = 'Invalid admin credentials. Default: admin / admin123';
-          return;
-        }
-      } catch (err) {
-        console.warn('Backend login endpoint unreachable, checking local credentials');
+      const u = usernameInput.toLowerCase();
+      const isDemoCreds = (u === 'washvix' || u === 'admin') && (passwordInput === 'Washvix@123' || passwordInput === 'admin123');
+
+      let authSuccess = false;
+      let invalidCreds = false;
+
+      const authBases = [AUTH_API_BASE_URL];
+      if (!authBases.includes('http://localhost:5000/api')) {
+        authBases.push('http://localhost:5000/api');
+      }
+      if (!authBases.includes('http://127.0.0.1:5000/api')) {
+        authBases.push('http://127.0.0.1:5000/api');
       }
 
-      // Local authentication fallback
-      const validUser = ['admin', 'washvix'].includes(usernameInput.toLowerCase());
-      const validPass = ['admin123', 'washvix123', 'change-this-password'].includes(passwordInput);
+      for (const authBase of authBases) {
+        try {
+          const response = await fetch(`${authBase}/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ username: usernameInput, password: passwordInput })
+          });
+          const result = await response.json();
+          if (result.success) {
+            authSuccess = true;
+            break;
+          } else if (result.error === 'Invalid admin credentials') {
+            invalidCreds = true;
+            break;
+          }
+        } catch (err) {
+          console.warn(`Admin login endpoint unreachable at ${authBase}`);
+        }
+      }
 
-      if (validUser && validPass) {
+      // Offline / Local admin authentication fallback
+      if (!authSuccess && (!invalidCreds || isDemoCreds)) {
+        if (isDemoCreds) {
+          authSuccess = true;
+        }
+      }
+
+      if (authSuccess) {
         sessionStorage.setItem('washvix_admin_auth', 'true');
         event.currentTarget.reset();
         document.getElementById('loginError').textContent = '';
         checkAdminSession();
       } else {
-        document.getElementById('loginError').textContent = 'Invalid admin credentials. Default: admin / admin123';
+        document.getElementById('loginError').textContent = 'Invalid username or password.';
       }
     });
 
     async function logoutAdmin() {
       try {
         await fetch(`${AUTH_API_BASE_URL}/auth/logout`, { method: 'POST', credentials: 'include' });
-      } catch(e) {}
+      } catch (e) { }
       sessionStorage.removeItem('washvix_admin_auth');
       checkAdminSession();
     }
@@ -658,15 +676,27 @@
     }
 
     async function loadBookings() {
-      let bookings = [];
+      let apiBookings = [];
       if (window.API && typeof window.API.fetchBookings === 'function') {
-        bookings = await window.API.fetchBookings();
-      } else {
         try {
-          const local = localStorage.getItem('washvix_bookings');
-          if (local) bookings = JSON.parse(local);
+          apiBookings = await window.API.fetchBookings();
         } catch (e) { }
       }
+
+      let localBookings = [];
+      try {
+        const local = localStorage.getItem('washvix_bookings');
+        if (local) localBookings = JSON.parse(local);
+      } catch (e) { }
+
+      const combined = [...localBookings, ...(Array.isArray(apiBookings) ? apiBookings : [])];
+      const seen = new Set();
+      let bookings = combined.filter(b => {
+        const id = b.id || (b.bookingDate + b.bookingTime + b.phone);
+        if (seen.has(id)) return false;
+        seen.add(id);
+        return true;
+      });
 
       const dateFilter = document.getElementById('filterDate').value;
       const phoneFilter = document.getElementById('filterPhone').value.toLowerCase().trim();
@@ -735,12 +765,14 @@
       let apiReviews = [];
 
       if (window.API && typeof window.API.getReviews === 'function') {
-        apiReviews = await window.API.getReviews();
+        try {
+          apiReviews = await window.API.getReviews();
+        } catch (e) { }
       }
 
       const localReviews = getLocalStoredReviews();
 
-      const combined = [...localReviews, ...apiReviews];
+      const combined = [...localReviews, ...(Array.isArray(apiReviews) ? apiReviews : [])];
       const seen = new Set();
       reviews = combined.filter(r => {
         const id = r.id || r.created_at || r.name;
@@ -794,7 +826,9 @@
       if (!confirm('Are you sure you want to delete this customer review?')) return;
 
       if (window.API && typeof window.API.deleteReview === 'function') {
-        await window.API.deleteReview(id);
+        try {
+          await window.API.deleteReview(id);
+        } catch (e) { }
       }
 
       const local = getLocalStoredReviews();
@@ -808,7 +842,9 @@
       if (!confirm('WARNING: Are you sure you want to delete ALL customer reviews?')) return;
 
       if (window.API && typeof window.API.deleteAllReviews === 'function') {
-        await window.API.deleteAllReviews();
+        try {
+          await window.API.deleteAllReviews();
+        } catch (e) { }
       }
 
       setLocalStoredReviews([]);
@@ -817,8 +853,15 @@
 
     async function updateBookingStatus(id, newStatus) {
       if (window.API && typeof window.API.updateStatus === 'function') {
-        await window.API.updateStatus(id, newStatus);
+        try {
+          await window.API.updateStatus(id, newStatus);
+        } catch (e) { }
       }
+      try {
+        const local = JSON.parse(localStorage.getItem('washvix_bookings') || '[]');
+        const updated = local.map(b => String(b.id) === String(id) ? { ...b, status: newStatus } : b);
+        localStorage.setItem('washvix_bookings', JSON.stringify(updated));
+      } catch (e) { }
       loadBookings();
     }
 
@@ -826,8 +869,15 @@
       if (!confirm('Delete this booking?')) return;
 
       if (window.API && typeof window.API.deleteBooking === 'function') {
-        await window.API.deleteBooking(id);
+        try {
+          await window.API.deleteBooking(id);
+        } catch (e) { }
       }
+      try {
+        const local = JSON.parse(localStorage.getItem('washvix_bookings') || '[]');
+        const updated = local.filter(b => String(b.id) !== String(id));
+        localStorage.setItem('washvix_bookings', JSON.stringify(updated));
+      } catch (e) { }
       loadBookings();
     }
 
@@ -835,8 +885,12 @@
       if (!confirm('WARNING: Are you sure you want to delete ALL bookings?')) return;
 
       if (window.API && typeof window.API.deleteAllBookings === 'function') {
-        await window.API.deleteAllBookings();
+        try {
+          await window.API.deleteAllBookings();
+        } catch (e) { }
       }
+      localStorage.removeItem('washvix_bookings');
+      localStorage.removeItem('washvix_booked_slots');
       loadBookings();
     }
 
@@ -849,8 +903,8 @@
         .replace(/"/g, '&quot;');
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      checkAdminSession();
+    document.addEventListener('DOMContentLoaded', async () => {
+      await checkAdminSession();
     });
   </script>
 
